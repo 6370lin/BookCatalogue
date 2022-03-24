@@ -1,7 +1,9 @@
 using ApplicationCore.Interfaces;
+using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +29,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
-builder.Services.AddMemoryCache();
+builder.Services.AddCoreServices(); 
+builder.Services.AddWebServices();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddRouting();
 
 builder.Services.AddControllersWithViews();
@@ -59,7 +63,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseCookiePolicy();
+app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -69,4 +73,25 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
 });
 
+app.Logger.LogInformation("Seeding Database...");
+
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    try
+    {
+        var catalogContext = scopedProvider.GetRequiredService<BookCatalogDbContext>();
+        await BookCatalogDbContextSeed.SeedAsync(catalogContext, app.Logger);
+
+        var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
+
+app.Logger.LogInformation("LAUNCHING");
 app.Run();

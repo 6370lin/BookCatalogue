@@ -2,6 +2,7 @@
 using Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Data;
 
 namespace Infrastructure
 {
@@ -17,11 +18,17 @@ namespace Infrastructure
                 // Add Identity DbContext
                 services.AddDbContext<AppIdentityDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+                services.AddDbContext<BookCatalogDbContext>(options =>
+                    options.UseSqlServer(configuration.GetConnectionString("BookCatalogueConnection")));
             }
             else
             {
                 services.AddDbContext<AppIdentityDbContext>(options =>
                     options.UseInMemoryDatabase("Identity"));
+
+                services.AddDbContext<BookCatalogDbContext>(options =>
+                    options.UseInMemoryDatabase("BookCatalogue"));
             }
         }
     }
