@@ -14,7 +14,7 @@ Sample ASP.NET Core reference application, demonstrating a clean-architecture us
     dotnet tool install --global dotnet-ef
     ```
 
-3. Open a command prompt in the Web folder and execute the following commands:
+3. Open a command prompt in the src/Web folder and execute the following commands:
 
     ```
     dotnet restore
