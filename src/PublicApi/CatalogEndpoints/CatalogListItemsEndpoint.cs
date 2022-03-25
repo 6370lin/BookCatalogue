@@ -21,7 +21,7 @@ namespace PublicApi.CatalogEndpoints
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            await SendAsync(GetCatalogItemsAsync());
+            await SendAsync(await GetCatalogItemsAsync(), cancellation: ct);
         }
 
         private async Task<List<CatalogItemDto>> GetCatalogItemsAsync()
