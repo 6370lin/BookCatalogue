@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="FastEndpoints" Version="3.11.0" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="3.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Requests\" />
+    <Folder Include="Responses\" />
+    <Folder Include="SubscriptionEndpoints\" />
   </ItemGroup>
 
 </Project>

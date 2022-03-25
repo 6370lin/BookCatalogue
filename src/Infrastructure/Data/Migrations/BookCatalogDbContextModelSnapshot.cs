@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookCatalogDbContext))]
-    partial class BookCatalogueDbContextModelSnapshot : ModelSnapshot
+    partial class BookCatalogDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -58,11 +58,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BookIsbn")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Isbn")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -99,7 +96,9 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("ApplicationCore.Entities.Book", "Book")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("BookIsbn");
+                        .HasForeignKey("BookIsbn")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApplicationCore.Entities.User", "User")
                         .WithMany("Subscriptions")

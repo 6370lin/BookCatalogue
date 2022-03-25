@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 
 namespace Web.Configuration
@@ -9,6 +10,7 @@ namespace Web.Configuration
         {
             services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddSingleton<IUriComposer, UriComposer>();
 
             return services;
         }

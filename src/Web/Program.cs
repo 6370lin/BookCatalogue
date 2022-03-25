@@ -38,7 +38,7 @@ builder.Services.AddRouting();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(options =>
 {
-   //options.Conventions.AuthorizePage("/Privacy");
+   options.Conventions.AuthorizePage("/Subscriptions");
 });
 
 builder.Services.AddHttpContextAccessor();

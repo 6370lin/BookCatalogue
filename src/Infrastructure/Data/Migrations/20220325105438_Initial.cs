@@ -44,8 +44,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Isbn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BookIsbn = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    BookIsbn = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +53,8 @@ namespace Infrastructure.Data.Migrations
                         name: "FK_Subscriptions_Books_BookIsbn",
                         column: x => x.BookIsbn,
                         principalTable: "Books",
-                        principalColumn: "Isbn");
+                        principalColumn: "Isbn",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Subscriptions_Users_UserId",
                         column: x => x.UserId,

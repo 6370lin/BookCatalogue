@@ -9,14 +9,14 @@ namespace ApplicationCore.Entities
         public Guid Id { get; private set; }
         public string UserId { get; private set; }
         public User User { get; private set; }
-        public string Isbn { get; private set; }
+        public string BookIsbn { get; private set; }
         public Book Book { get; private set; }
 
-        public Subscription(string userId, string isbn)
+        public Subscription(string userId, string bookIsbn)
         {
             Id = Guid.NewGuid();
             UserId = userId;
-            Isbn = isbn;
+            BookIsbn = bookIsbn;
         }
     }
 }

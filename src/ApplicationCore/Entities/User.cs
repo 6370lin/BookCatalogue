@@ -11,9 +11,13 @@ namespace ApplicationCore.Entities
         public string LastName { get; private set; }
         public string FullName => FirstName + " " + LastName;
         public ICollection<Subscription> Subscriptions { get; private set; }
-        private decimal _monthlySubscription => Subscriptions.Sum(s => s.Book.SubscriptionPrice);
-        public string MonthlySubscriptionDisplay => "R" + _monthlySubscription.ToString();
-
+        public User(string email)
+        {
+            Email = email;
+            FirstName = "";
+            LastName = "";
+            Subscriptions = new List<Subscription>();
+        }
         public User(string email, string firstName, string lastName)
         {
             Email = email;

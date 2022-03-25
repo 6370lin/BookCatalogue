@@ -29,5 +29,9 @@ namespace ApplicationCore.Entities
             SubscriptionPrice = subscriptionPrice;
             PictureUri = pictureUri;
         }
+        public string GetBookText()
+        {
+            return Text;
+        }
     }
 }

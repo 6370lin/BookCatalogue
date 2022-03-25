@@ -7,21 +7,37 @@ namespace Web.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-
-        private readonly IBookCatalogViewModelService _bookcatalogueviewmodelservicel;
+        private readonly IBookCatalogViewModelService _bookcatalogviewmodelservicel;
+        private readonly ISubscriptionViewModelService _subscriptionviewmodelservice;
 
         public IndexModel(ILogger<IndexModel> logger,
-                          IBookCatalogViewModelService bookcatalogueviewmodelservicel)
+                          IBookCatalogViewModelService bookcatalogviewmodelservicel,
+                          ISubscriptionViewModelService subscriptionviewmodelservice)
         {
             _logger = logger;
-            _bookcatalogueviewmodelservicel = bookcatalogueviewmodelservicel;
+            _bookcatalogviewmodelservicel = bookcatalogviewmodelservicel;
+            _subscriptionviewmodelservice = subscriptionviewmodelservice;
         }
 
         public CatalogueViewModel CatalogViewModel { get; set; } = new CatalogueViewModel();
 
         public async Task OnGet()
         {
-            CatalogViewModel = await _bookcatalogueviewmodelservicel.GetBookCatalogueViewModelAsync();
+            CatalogViewModel = await _bookcatalogviewmodelservicel.GetBookCatalogueViewModelAsync();
+        }
+
+        public async Task OnPostAsync(string BookId)
+        {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                RedirectToPage("/Identity/Account/Login");
+            }
+
+            string userid = HttpContext.User.Identity.Name;
+
+            await _subscriptionviewmodelservice.AddSubscription(BookId, userid);
+
+            RedirectToPage("/Subscriptions"); //todo fix nullreference error
         }
     }
 }

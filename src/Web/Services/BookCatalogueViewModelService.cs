@@ -8,10 +8,13 @@ namespace Web.Services
     public class BookCatalogueViewModelService : IBookCatalogViewModelService
     {
         private readonly IRepository<Book> _bookRepository;
+        private readonly IUriComposer _uriComposer;
 
-        public BookCatalogueViewModelService(IRepository<Book> bookRepository)
+        public BookCatalogueViewModelService(IRepository<Book> bookRepository,
+                                             IUriComposer uriComposer)
         {
             _bookRepository = bookRepository;
+            _uriComposer = uriComposer;
         }
 
         public async Task<CatalogueViewModel> GetBookCatalogueViewModelAsync()
@@ -26,9 +29,15 @@ namespace Web.Services
                                                  Title = b.Title,
                                                  Description = b.Description,
                                                  Price = b.SubscriptionPriceDisplay,
-                                                 PictureUri = b.PictureUri                                                 
+                                                 PictureUri = _uriComposer.ComposePicUri(b.PictureUri)                                                
                                              })
                                             .ToList();
+
+            catalogViewModel.PaginationInfo = new PaginationInfoViewModel 
+            {
+                ItemsPerRow = 3,
+                TotalItems = catalogViewModel.CatalogItems.Count
+            };
 
             return catalogViewModel;
         }

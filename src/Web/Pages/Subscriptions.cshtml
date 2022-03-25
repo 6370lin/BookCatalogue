@@ -1,0 +1,35 @@
+﻿@page
+@model Web.Pages.SubscriptionsModel
+@{
+}
+
+<div>
+    <p>Your monthly subscription price: @Model.SubscriptionViewModel.MonthlySubscription</p>
+</div>
+
+@if (Model.SubscriptionViewModel.Subscriptions.Any())
+{
+    @foreach (var item in Model.SubscriptionViewModel.Subscriptions)
+    {
+        <div class="row">
+            <div class="col-sm-4">
+                <form method="post">
+                    <input id="bookid" name="bookid" type="hidden" value="@item.Id" />
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="item.PictureUri">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Title</h5>
+                            <p class="card-text">@item.Description</p>
+                            <input type="submit" class="btn btn-primary" value="Read Now"/> 
+                            <input type="submit" class="btn btn-danger" value="Unsubscribe"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>It seems you have no subscriptions yet.</p>
+}
