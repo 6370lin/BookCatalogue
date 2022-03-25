@@ -1,5 +1,7 @@
 Github url: https://github.com/6370lin/BookCatalogue
 
+To clone repo: git clone https://github.com/6370lin/BookCatalogue.git
+
 Sample ASP.NET Core reference application, demonstrating a clean-architecture using IRepository and Specification pattern. 
 
 1a. By default, the project uses a real database. If you want an in-memory database, you can add in `appsettings.json`
