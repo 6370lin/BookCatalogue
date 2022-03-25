@@ -10,7 +10,21 @@ namespace Infrastructure
     {
         public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            if (configuration.GetConnectionString("IdentityConnection") != null)
+            var useOnlyInMemoryDatabase = false;
+            if (configuration["UseOnlyInMemoryDatabase"] != null)
+            {
+                useOnlyInMemoryDatabase = bool.Parse(configuration["UseOnlyInMemoryDatabase"]);
+            }
+
+            if (useOnlyInMemoryDatabase)
+            {
+                services.AddDbContext<AppIdentityDbContext>(options =>
+                    options.UseInMemoryDatabase("Identity"));
+
+                services.AddDbContext<BookCatalogDbContext>(options =>
+                    options.UseInMemoryDatabase("BookCatalogue"));
+            }
+            else
             {
                 // use real database
                 // Requires LocalDB which can be installed with SQL Server Express 2016
@@ -21,14 +35,6 @@ namespace Infrastructure
 
                 services.AddDbContext<BookCatalogDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("BookCatalogueConnection")));
-            }
-            else
-            {
-                services.AddDbContext<AppIdentityDbContext>(options =>
-                    options.UseInMemoryDatabase("Identity"));
-
-                services.AddDbContext<BookCatalogDbContext>(options =>
-                    options.UseInMemoryDatabase("BookCatalogue"));
             }
         }
     }
