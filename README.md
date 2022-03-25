@@ -4,10 +4,7 @@ Sample ASP.NET Core reference application, demonstrating a clean-architecture us
 
 1a. By default, the project uses a real database. If you want an in-memory database, you can add in `appsettings.json`
 
-    ```json
-   {
-       "UseOnlyInMemoryDatabase": true
-   }
+   json { "UseOnlyInMemoryDatabase": true }
 
 1b. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
 
