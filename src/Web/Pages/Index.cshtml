@@ -15,26 +15,7 @@
     <div class="row">
         @foreach (var item in Model.CatalogViewModel.CatalogItems)
         {
-            <div class="col-sm-4">
-                <form method="post">
-                    <input id="bookid" name="bookid" type="hidden" value="@item.Id" />
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="@item.PictureUri">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Title</h5>
-                            <p class="card-text">@item.Description</p>
-                            <p class="card-text">@item.Price</p>
-                            <input type="submit" class="btn btn-primary" value="Subscribe"
-                           @{
-                        if(authenticated_user != true)
-                           {
-                               @:disabled="disabled"
-                           }
-                           } />
-                        </div>
-                    </div>
-                </form>
-            </div>
+            <partial name="_catalogItem" for="@item"/>
         }
     </div>
 }

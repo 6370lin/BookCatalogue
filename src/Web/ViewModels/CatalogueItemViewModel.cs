@@ -7,6 +7,6 @@
         public string Description { get; set; }
         public string PictureUri { get; set; }
         public string Price { get; set; }
-
+        public SubscriptionBtnMode BtnMode { get; set; }
     }
 }

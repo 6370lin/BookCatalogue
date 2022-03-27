@@ -4,6 +4,6 @@ namespace Web.Interfaces
 {
     public interface IBookCatalogViewModelService
     {
-        Task<CatalogueViewModel> GetBookCatalogueViewModelAsync();
+        Task<CatalogueViewModel> GetBookCatalogueViewModelAsync(string userid = "");
     }
 }

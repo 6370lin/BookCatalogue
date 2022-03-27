@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications.Books;
 using Web.Interfaces;
 using Web.ViewModels;
 
@@ -17,11 +18,13 @@ namespace Web.Services
             _uriComposer = uriComposer;
         }
 
-        public async Task<CatalogueViewModel> GetBookCatalogueViewModelAsync()
+        public async Task<CatalogueViewModel> GetBookCatalogueViewModelAsync(string userid = "")
         {
             var catalogViewModel = new CatalogueViewModel();
 
-            catalogViewModel.CatalogItems = (await _bookRepository.ListAsync())
+            var bookWithSubscriptionsSpec = new BooksWithSubscriptionsSpecification();
+
+            catalogViewModel.CatalogItems = (await _bookRepository.ListAsync(bookWithSubscriptionsSpec))
                                             .Select(b => 
                                              new CatalogItemViewModel 
                                              { 
@@ -29,7 +32,8 @@ namespace Web.Services
                                                  Title = b.Title,
                                                  Description = b.Description,
                                                  Price = b.SubscriptionPriceDisplay,
-                                                 PictureUri = _uriComposer.ComposePicUri(b.PictureUri)                                                
+                                                 PictureUri = _uriComposer.ComposePicUri(b.PictureUri),
+                                                 BtnMode = SubscriptionBtnHandler(b.Subscriptions, userid)
                                              })
                                             .ToList();
 
@@ -40,6 +44,26 @@ namespace Web.Services
             };
 
             return catalogViewModel;
+        }
+
+        public SubscriptionBtnMode SubscriptionBtnHandler(ICollection<Subscription> Subscriptions, string userid)
+        {
+            //user not logged in
+            if (string.IsNullOrEmpty(userid))
+            {
+                return SubscriptionBtnMode.Disable;
+            }
+
+            if (Subscriptions.Any())
+            {
+                //user already subscribed
+                if (Subscriptions.Select(sub => sub.UserId).Contains(userid))
+                {
+                    return SubscriptionBtnMode.Subscribed;
+                }
+            }
+
+            return SubscriptionBtnMode.Subscribe;
         }
     }
 }

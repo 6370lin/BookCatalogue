@@ -1,0 +1,17 @@
+﻿@using Web.ViewModels
+@model CatalogItemViewModel
+
+<div class="col-sm-4">
+    <form method="post">
+        <input id="bookid" name="bookid" type="hidden" value="@Model.Id" />
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@Model.PictureUri">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <p class="card-text">@Model.Description</p>
+                <p class="card-text">@Model.Price</p>
+                <partial name="_subscribeBtn" for="@Model.BtnMode"/>
+            </div>
+        </div>
+    </form>
+</div>

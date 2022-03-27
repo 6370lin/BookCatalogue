@@ -28,6 +28,7 @@ namespace ApplicationCore.Entities
             Text = text;
             SubscriptionPrice = subscriptionPrice;
             PictureUri = pictureUri;
+            Subscriptions = new List<Subscription>();
         }
         public string GetBookText()
         {

@@ -1,0 +1,15 @@
+﻿@using Web.ViewModels
+@model SubscriptionBtnMode
+
+@switch (Model)
+{
+    case SubscriptionBtnMode.Subscribe:
+        <input type="submit" class="btn btn-primary" value="Subscribe" />
+        break;
+    case SubscriptionBtnMode.Subscribed:
+        <input type="submit" class="btn btn-primary" value="Subscribed" disabled/>
+        break;
+    case SubscriptionBtnMode.Disable:
+        <input type="submit" class="btn btn-primary" value="Subscribe" disabled/>
+        break;
+}

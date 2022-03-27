@@ -23,7 +23,7 @@ namespace Web.Pages
 
         public async Task OnGet()
         {
-            CatalogViewModel = await _bookcatalogviewmodelservicel.GetBookCatalogueViewModelAsync();
+            CatalogViewModel = await _bookcatalogviewmodelservicel.GetBookCatalogueViewModelAsync(User.Identity.Name);
         }
 
         public async Task OnPostAsync(string BookId)
@@ -37,7 +37,9 @@ namespace Web.Pages
 
             await _subscriptionviewmodelservice.AddSubscription(BookId, userid);
 
-            RedirectToPage("/Subscriptions"); //todo fix nullreference error
+            CatalogViewModel = await _bookcatalogviewmodelservicel.GetBookCatalogueViewModelAsync(userid);
+
+            RedirectToPage();
         }
     }
 }
