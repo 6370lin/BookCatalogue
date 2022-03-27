@@ -35,11 +35,9 @@ namespace Web.Pages
 
             string userid = HttpContext.User.Identity.Name;
 
-            await _subscriptionviewmodelservice.AddSubscription(BookId, userid);
+            await _subscriptionviewmodelservice.AddSubscriptionAsync(BookId, userid);
 
             CatalogViewModel = await _bookcatalogviewmodelservicel.GetBookCatalogueViewModelAsync(userid);
-
-            RedirectToPage();
         }
     }
 }

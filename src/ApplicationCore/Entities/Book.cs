@@ -30,9 +30,5 @@ namespace ApplicationCore.Entities
             PictureUri = pictureUri;
             Subscriptions = new List<Subscription>();
         }
-        public string GetBookText()
-        {
-            return Text;
-        }
     }
 }

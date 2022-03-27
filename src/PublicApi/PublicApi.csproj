@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="FastEndpoints" Version="3.11.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="3.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,8 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Requests\" />
-    <Folder Include="Responses\" />
     <Folder Include="SubscriptionEndpoints\" />
   </ItemGroup>
 

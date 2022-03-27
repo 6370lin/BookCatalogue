@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 
 namespace PublicApi.Configuration
 {
@@ -11,6 +12,7 @@ namespace PublicApi.Configuration
             services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddSingleton<IUriComposer, UriComposer>();
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             return services;
         }

@@ -11,17 +11,20 @@ namespace Web.Services
     {
         private readonly IRepository<User> _userrepository;
         private readonly IRepository<Subscription> _subscriptionrepository;
+        private readonly IRepository<Book> _bookrepository;
         private readonly IUriComposer _uriComposer;
         public SubscriptionViewModelService(IRepository<User> userrepository,
                                             IRepository<Subscription> subscriptionrepository,
-                                            IUriComposer uriComposer)
+                                            IRepository<Book> bookrepository,
+        IUriComposer uriComposer)
         {
             _userrepository = userrepository;
             _subscriptionrepository = subscriptionrepository;
+            _bookrepository = bookrepository;
             _uriComposer = uriComposer;
         }
 
-        public async Task AddSubscription(string bookid, string userid)
+        public async Task AddSubscriptionAsync(string bookid, string userid)
         {
             var user = await EnsureUserExistsAsync(userid);
 
@@ -38,6 +41,34 @@ namespace Web.Services
             await _subscriptionrepository.AddAsync(new Subscription(user.Email, bookid));
         }
 
+        public async Task DeleteSubscriptionAsync(Guid subscriptionid)
+        {
+            var subscription = await _subscriptionrepository.GetByIdAsync(subscriptionid);
+
+            if (subscription == null)
+            {
+                throw new Exception("Subscription does not exist.");
+            }
+
+            await _subscriptionrepository.DeleteAsync(subscription);
+
+            await _subscriptionrepository.SaveChangesAsync();
+        }
+
+        public async Task<string> GetBookTextAsync(Guid subscriptionid, string userid)
+        {
+            var subscription = await _subscriptionrepository.GetByIdAsync(subscriptionid);
+
+            if (subscription == null)
+            {
+                throw new Exception("Subscription no longer exists.");
+            }
+
+            var book = await _bookrepository.GetByIdAsync(subscription.BookIsbn);
+
+            return book.Text;
+        }
+
         public async Task<SubscriptionViewModel> GetUserSubscriptionViewModelAsync(string userid)
         {
             var subscriptionViewModel = new SubscriptionViewModel();
@@ -52,10 +83,10 @@ namespace Web.Services
             subscriptionViewModel.Subscriptions = userWithSubs.Subscriptions.Select(s =>
                                                    new SubscriptionItemViewModel
                                                    {
-                                                        Id = s.BookIsbn,
-                                                        Title = s.Book.Title,
-                                                        Description = s.Book.Description,
-                                                        PictureUri = _uriComposer.ComposePicUri(s.Book.PictureUri)
+                                                       Id = s.Id,
+                                                       Title = s.Book.Title,
+                                                       Description = s.Book.Description,
+                                                       PictureUri = _uriComposer.ComposePicUri(s.Book.PictureUri)
                                                    }).ToList();
 
             return subscriptionViewModel;

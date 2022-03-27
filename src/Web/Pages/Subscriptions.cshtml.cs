@@ -14,12 +14,23 @@ namespace Web.Pages
 
         public SubscriptionViewModel SubscriptionViewModel { get; set; } = new SubscriptionViewModel();
 
+        public string BookText = string.Empty;
+
         public async Task OnGet()
         {
             SubscriptionViewModel =  await _subscriptionviewmodelservice.GetUserSubscriptionViewModelAsync(User.Identity.Name);
         }
 
-        //todo OnGetReadBook() return the text of book so user can read subscribed book
-        //todo removeSubscription
+        public async Task OnPostReadBookAsync(Guid subscriptionid)
+        {
+            BookText = await _subscriptionviewmodelservice.GetBookTextAsync(subscriptionid, User.Identity.Name);
+            SubscriptionViewModel = await _subscriptionviewmodelservice.GetUserSubscriptionViewModelAsync(User.Identity.Name);
+        }
+        public async Task OnPostDeleteSubscriptionAsync(Guid subscriptionid)
+        {
+            await _subscriptionviewmodelservice.DeleteSubscriptionAsync(subscriptionid);
+
+            SubscriptionViewModel = await _subscriptionviewmodelservice.GetUserSubscriptionViewModelAsync(User.Identity.Name);
+        }
     }
 }
